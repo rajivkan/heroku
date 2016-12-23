@@ -83,7 +83,9 @@ app.get('/sso', passport.authenticate('jwt', { session: false }), function(req, 
   //console.log(config.get('server.secretKey')+'\n');	
   var encodedToken = jwtSimple.encode(req.headers.authorization, config.get('server.secretKey'));
   //var encodedToken = req.headers.authorization;
-  console.log(encodedToken+'\n'); 
+  console.log(encodedToken+'\n');
+console.log("========================");
+  console.log(req.query.return_to); 
   res.redirect(req.query.return_to + '?jwt=' + encodedToken);
 });
 
