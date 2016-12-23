@@ -1,7 +1,7 @@
 {
 	// Server config
 	"server": {
-		"listenPort": 8080,
+		"listenPort": 5000,
         "secretKey": "zY6OgVD4CCovzan8",
 	},
     // Database configs 
