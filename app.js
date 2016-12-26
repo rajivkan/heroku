@@ -28,20 +28,24 @@ app.use(bodyParser.json());
 app.use(methodOverride('X-HTTP-Method-Override'));
 
 // CORS Support
-// app.use(function(req, res, next) {
-// 	console.log(req.method);
-// 	if (req.method === 'OPTIONS' || req.method === 'GET' || req.method === 'POST') {
-// 		res.header('Access-Control-Allow-Origin', '*');
-// 		res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-// 		res.header('Access-Control-Allow-Headers', 'Accept, Authorization, Content-Type, X-Requested-With, Range');
-// 		res.header('Access-Control-Expose-Headers', 'Content-Length');
-// 		res.header('Access-Control-Allow-Credentials', true);
-// 		//res.send(200);
-// 		return next();
-// 	} else {
-// 		return next();
-// 	}
-// });
+app.use(function(req, res, next) {
+	console.log(req.method);
+	res.header('Access-Control-Allow-Origin', '*');
+        res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+        res.header('Access-Control-Allow-Headers', 'Accept, Authorization, Content-Type, X-Requested-With, Range');
+        res.header('Access-Control-Expose-Headers', 'Content-Length');
+	if (req.method === 'OPTIONS') {
+		// res.header('Access-Control-Allow-Origin', '*');
+		// res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+		// res.header('Access-Control-Allow-Headers', 'Accept, Authorization, Content-Type, X-Requested-With, Range');
+		// res.header('Access-Control-Expose-Headers', 'Content-Length');
+		// res.header('Access-Control-Allow-Credentials', true);
+		res.send(200);
+		//return next();
+	} else {
+		return next();
+	}
+});
 
 // Config details based on env
 var config = require('config');
