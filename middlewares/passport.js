@@ -82,16 +82,13 @@ var config = require('config');
 
 
 // Setup work and export for the JWT passport strategy
-module.exports = function(passport) {  
+module.exports = function(passport) {
   var opts = {};
   opts.jwtFromRequest = extractJWT.fromAuthHeader();
   opts.secretOrKey = config.get('server.secretKey');
-
-  console.log('ddsdvsvvs');
   console.log(opts);
-
   passport.use(new strategyJWT(opts, function(jwt_payload, done) {    
-    console.log(jwt_payload);
+    console.log("jwt_payload======================");
     User.findOne({id: jwt_payload.id}, function(err, user) {
       if (err) {
         return done(err, false);

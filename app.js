@@ -12,40 +12,36 @@ var _ = require('lodash');
 
 // Create the application
 var app = express();
+app.all('/*', function(req, res, next) {
+      res.header("Access-Control-Allow-Origin", "*");
+      res.header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, Authorization");
+      res.header("Access-Control-Allow-Methods", "GET, POST","PUT");
+      next();
+    });
 
-app.set('port', (process.env.PORT || 5000));
+// app.use(function(req, res, next) {
+//     if (req.method === 'OPTIONS') {
+//         res.header('Access-Control-Allow-Origin', '*');
+//         //res.header('Access-Control-Allow-Methods', 'GET, POST');
+//         res.header('Access-Control-Allow-Headers', 'Accept, Authorization, Content-Type, X-Requested-With, Range');
+//         res.header('Access-Control-Expose-Headers', 'Content-Length');
+//         res.header('Access-Control-Allow-Credentials', 'true');
+//         res.send(200);
+//         //return next();
+//     } else {
+//         return next();
+//     }
+// });
+
+app.set('port', (process.env.PORT || 3000));
 
 
-app.get('/', function(request, response) {
-  response.end("hi ");
-});
-
-//Middleware necessary for REST API's
+// Middleware necessary for REST API's
 app.use(bodyParser.urlencoded({
-	extended: true
+  extended: true
 }));
 app.use(bodyParser.json());
 app.use(methodOverride('X-HTTP-Method-Override'));
-
-// CORS Support
-app.use(function(req, res, next) {
-	console.log(req.method);
-	res.header('Access-Control-Allow-Origin', '*');
-        res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-        res.header('Access-Control-Allow-Headers', 'Accept, Authorization, Content-Type, X-Requested-With, Range');
-        res.header('Access-Control-Expose-Headers', 'Content-Length');
-	if (req.method === 'OPTIONS') {
-		// res.header('Access-Control-Allow-Origin', '*');
-		// res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-		// res.header('Access-Control-Allow-Headers', 'Accept, Authorization, Content-Type, X-Requested-With, Range');
-		// res.header('Access-Control-Expose-Headers', 'Content-Length');
-		// res.header('Access-Control-Allow-Credentials', true);
-		res.send(200);
-		//return next();
-	} else {
-		return next();
-	}
-});
 
 // Config details based on env
 var config = require('config');
@@ -53,14 +49,6 @@ var config = require('config');
 // Passport authentication process
 require('./middlewares/passport')(passport);
 
-app.use(session({
-	secret: 'keyboard cat',
-	resave: true,
-	saveUninitialized: true
-}));
-app.use(passport.initialize());
-app.use(passport.session());
-app.use(flash());
 
 // Connecting to Master Database
 var masterDB = require('./config/db/masterDB');
